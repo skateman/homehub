@@ -67,7 +67,7 @@ trigger:
 
 action:
   - variables:
-      command: "{{ trigger.new_state.state }}"
+      command: "{{ trigger.to_state.state }}"
   - choose:
       - conditions:
           - condition: template
