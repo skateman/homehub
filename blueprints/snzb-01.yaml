@@ -1,6 +1,6 @@
 blueprint:
   source_url: https://github.com/skateman/homehub/blob/master/blueprints/snzb-01.yaml
-  name: Zigbee2MQTT Sonoff SNZB-01
+  name: Zigbee2MQTT Sonoff SNZB-01 Button
   description: This blueprint is for automating the Sonoff SNZB-01 button connected via Zigbee2MQTT.
   domain: automation
 
