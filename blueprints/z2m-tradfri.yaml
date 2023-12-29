@@ -1,0 +1,111 @@
+blueprint:
+  source_url: https://github.com/skateman/homehub/blob/master/blueprints/z2m-tradfri.yaml
+  name: Zigbee2MQTT IKEA Tradfri Remote Control
+  description: This blueprint is for automating the IKEA Tradfri Remote connected via Zigbee2MQTT.
+  domain: automation
+
+  input:
+    remote:
+      name: IKEA TRADFRI Remote
+      description: Select the remote control you wish to use.
+      selector:
+        entity:
+          integration: mqtt
+          domain: sensor
+    power:
+      name: Power Button
+      selector:
+        action:
+      default: []
+    up_click:
+      name: Up Button (Short Press)
+      selector:
+        action:
+      default: []
+    up_hold:
+      name: Up Button (Long Press)
+      selector:
+        action:
+      default: []
+    down_click:
+      name: Down Button (Short Press)
+      selector:
+        action:
+      default: []
+    down_hold:
+      name: Down Button (Long Press)
+      selector:
+        action:
+      default: []
+    left_click:
+      name: Left Button (Short Press)
+      selector:
+        action:
+      default: []
+    left_hold:
+      name: Left Button (Long Press)
+      selector:
+        action:
+      default: []
+    right_click:
+      name: Right Button (Short Press)
+      selector:
+        action:
+      default: []
+    right_hold:
+      name: Right Button (Long Press)
+      selector:
+        action:
+      default: []
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input "remote"
+    attribute: action
+
+action:
+  - variables:
+      command: "{{ trigger.to_state.state }}"
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "toggle" }}'
+        sequence: !input power
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "brightness_up_click" }}'
+        sequence: !input up_click
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "brightness_up_hold" }}'
+        sequence: !input up_hold
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "brightness_down_click" }}'
+        sequence: !input down_click
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "brightness_down_hold" }}'
+        sequence: !input down_hold
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "arrow_left_click" }}'
+        sequence: !input left_click
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "arrow_left_hold" }}'
+        sequence: !input left_hold
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "arrow_right_click" }}'
+        sequence: !input right_click
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "arrow_right_hold" }}'
+        sequence: !input right_hold
+
+    # Any other event will cancel the repeat loops.
+    default: []
