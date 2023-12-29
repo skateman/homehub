@@ -64,11 +64,10 @@ max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input "remote"
-    attribute: action
 
 action:
   - variables:
-      command: "{{ trigger.to_state.state }}"
+      command: "{{ trigger.new_state.state }}"
   - choose:
       - conditions:
           - condition: template
