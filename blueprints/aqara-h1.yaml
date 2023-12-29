@@ -1,0 +1,65 @@
+blueprint:
+  source_url: https://github.com/skateman/homehub/blob/master/blueprints/aqara-h1.yaml
+  name: Zigbee2MQTT Aqara Wireless Remote Switch H1
+  description: This blueprint is for automating the Aqara Wireless Remote Switch H1 connected via Zigbee2MQTT.
+  domain: automation
+
+  input:
+    button:
+      name: Aqara Wireless Remote Switch H1
+      description: Select the remote you wish to use.
+      selector:
+        entity:
+          integration: mqtt
+          domain: sensor
+    single_left:
+      name: Left Button (Single Press)
+      selector:
+        action:
+      default: []
+    double_left:
+      name: Left Button (Double Press)
+      selector:
+        action:
+      default: []
+    single_right:
+      name: Right Button (Single Press)
+      selector:
+        action:
+      default: []
+    double_right:
+      name: Right Button (Double Press)
+      selector:
+        action:
+      default: []
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input "button"
+
+action:
+  - variables:
+      command: "{{ trigger.from_state.state }}"
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "single_left" }}'
+        sequence: !input single_left
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "double_left" }}'
+        sequence: !input double_left
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "single_right" }}'
+        sequence: !input single_right
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "double_right" }}'
+        sequence: !input double_right
+
+    # Any other event will cancel the repeat loops.
+    default: []
