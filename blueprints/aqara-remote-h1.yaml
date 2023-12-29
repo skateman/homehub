@@ -1,5 +1,5 @@
 blueprint:
-  source_url: https://github.com/skateman/homehub/blob/master/blueprints/aqara-h1.yaml
+  source_url: https://github.com/skateman/homehub/blob/master/blueprints/aqara-remote-h1.yaml
   name: Zigbee2MQTT Aqara Wireless Remote Switch H1
   description: This blueprint is for automating the Aqara Wireless Remote Switch H1 connected via Zigbee2MQTT.
   domain: automation
