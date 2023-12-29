@@ -1,0 +1,56 @@
+blueprint:
+  source_url: https://github.com/skateman/homehub/blob/master/blueprints/z2m-tradfri.yaml
+  name: Zigbee2MQTT Sonoff SNZB-01
+  description: This blueprint is for automating the Sonoff SNZB-01 button connected via Zigbee2MQTT.
+  domain: automation
+
+  input:
+    button:
+      name: SNZB-01
+      description: Select the button you wish to use.
+      selector:
+        entity:
+          integration: mqtt
+          domain: sensor
+    single:
+      name: Single Press
+      selector:
+        action:
+      default: []
+    double:
+      name: Double Press
+      selector:
+        action:
+      default: []
+    long:
+      name: Long Press
+      selector:
+        action:
+      default: []
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input "button"
+
+action:
+  - variables:
+      command: "{{ trigger.from_state.state }}"
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "single" }}'
+        sequence: !input single
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "double" }}'
+        sequence: !input double
+      - conditions:
+          - condition: template
+            value_template: '{{ command == "long" }}'
+        sequence: !input long
+
+    # Any other event will cancel the repeat loops.
+    default: []
